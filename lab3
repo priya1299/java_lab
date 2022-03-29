@@ -1,1 +1,150 @@
+import java.sql.Time;
+import java.util.Date;
+import java.util.List;
+import java.util.Scanner;
+ 
+ class Banking_Management{
+	public static void main(String args[]){
+		
+	}
+}
+ class Employee
+ {
+	private String userName;
+	private String password;
+    String type;
+	
+	public Employee(String userName, String password, String type)
+    {
+		this.userName=userName;
+		this.password=password;
+		this.type=type;
+	}
+	
+    public void setUserName(String userName){
+		this.userName=userName;
+	}
+	public void setPassword(String password){
+		this.password=password;
+	}
+	public void setType(String type){
+		this.type=type;
+	}
 
+	public String getUserName(){
+		return userName;
+	}
+	public String getPassword(){
+		return password;
+	}
+	public String getType(){
+		return type;
+	}
+
+
+
+ class Customer{
+	public int id;
+	public String name;
+	public String address;
+    public string father'sName;
+    public int mobileNo;
+    public int accountNo;
+    public int documentProof;
+    private long balance; 
+	
+    public Customer(int id, String name, String address, string father'sName , int mobileNo, int accountNo, int documentProof,long balance)
+    {
+        this.id=id;
+		this.name=name;
+        this.address=address;
+		this.father'sName=father'sName;
+		this.mobileNo=mobileNo;
+        this.accountNo=accountNo;
+		this.documentProof=documentProof;
+          this.balance=balance;
+	}
+
+ //method to deposit money  
+    public void deposit() {  
+        long amt;  
+        System.out.println("Enter the amount you want to deposit: ");  
+        amt = sc.nextLong();  
+        balance = balance + amt;  
+    }  
+    //method to withdraw money  
+    public void withdrawal() {  
+        long amt;  
+        System.out.println("Enter the amount you want to withdraw: ");  
+        amt = sc.nextLong();  
+        if (balance >= amt) {  
+            balance = balance - amt;  
+            System.out.println("Balance after withdrawal: " + balance);  
+        } else {  
+            System.out.println("Your balance is less than " + amt + "\tTransaction failed...!!" );  
+        }  
+    }  
+
+ class Account{
+	public int accountNo;
+	public String name;
+	public long balance;
+	
+    public Account(int accountNo, String name, long balance)
+    {
+        this.accountNo=id;
+		this.name=name;
+        this.balance=balance;
+    }
+
+ //method to display account details  
+    public void showAccount() {  
+        System.out.println("Name of account holder: " + name);  
+        System.out.println("Account no.: " + accountNo);   
+        System.out.println("Balance: " + balance);  
+    }  
+  
+    //method to search an account number  
+    public boolean search(String ac_no) {  
+        if (accountNo.equals(ac_no)) {  
+            showAccount();  
+            return (true);  
+        }  
+        return (false);  
+    }
+
+}
+class Bank{
+
+	public string bankName;
+	public int IFSC_code;
+	public int pincode;
+     public string branch;
+	
+    public Bank(int bankName,int IFSC_code, int pincode,string branch)
+    {
+        this.bankName=bankName;
+		this.IFSC_code=IFSC_code;
+        this.pincode=pincode;
+        this.branch=branch
+    }
+ public void setbankName(String bankName){
+		this.bankName=bankName;
+	}
+	public void setIFSC_code(int IFSC_code){
+		this.IFSC_code=IFSC_code;
+	}
+	public void setbranch(String branch){
+		this.branch=branch;
+	}
+
+	public String getbankName(){
+		return bankName;
+	}
+	public String getIFSC_code(){
+		return IFSC_code;
+	}
+	public String getbranch(){
+		return branch;
+	}
+}
