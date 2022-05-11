@@ -1,0 +1,158 @@
+/******************************************************* */
+//      this is just to show core functinality
+//      code is not fully developed
+//      need to do cases and conditions
+
+/******************************************************* */
+
+import java.util.*;
+
+public class String_buffer {
+
+    static int news;
+
+    public static void main(String[] args) {
+
+        Scanner s = new Scanner(System.in);
+        System.out.println("\nplease enter  your name \n ");
+        String sInput = s.next();
+
+        /***************************************************************** */
+        // using toCharArray method
+
+        // if given name contains digits this code will give digit present and says
+        // re-Enter your name
+        // else go for next method
+
+        char[] c = sInput.toCharArray();
+        StringBuffer sb = new StringBuffer();
+        StringBuffer sb1 = new StringBuffer();
+
+        // checkig for digits i username
+        boolean flag = false;
+        for (char ch : c) {
+
+            if (Character.isDigit(ch)) {
+
+                sb.append(ch);
+                flag = true;
+
+            }
+
+        }
+        if (flag) {
+
+            System.out.println(sb);
+            System.out.println(
+                    "\nname contains digits" + sb + "digits .. \nplease try to avoid specifyig digits in  name\n");
+        } else {
+
+            System.out.println("\n Name do not contains digits...Good to go");
+
+        }
+
+        /************************************************************************************************ */
+
+        /**************************************************************************************************** */
+        // n here i will show insert method
+        //
+
+        String originalString = sInput;
+        System.out.println("enter first name ");
+        String stringToBeInserted;
+        stringToBeInserted = s.next();
+        int index = 0;
+        StringBuffer newString = new StringBuffer(originalString);
+        System.out.println(newString.insert(index, stringToBeInserted));
+        /****************************************************************************************************** */
+
+        /***************************************************************************************************** */
+        // here im usinng islowSurroggate , append methods
+    // im genrating random digits and appening PG to generated digits
+
+        // to generate random bank number and add bank code at end
+
+        Random rand = new Random();
+        String card = "PG";
+        for (int i = 0; i < 14; i++) {
+            int n = rand.nextInt(10) + 0;
+            card += Integer.toString(n);
+        }
+        for (int i = 0; i < 16; i++) {
+            if (i % 4 == 0)
+                System.out.print(" ");
+
+        }
+        ///////////////////////////////////////////////////
+        boolean flags = false;
+        for (char ch : c) {
+
+            if (Character.isLowSurrogate(ch)) {
+
+                sb1.append(ch);
+                flags = true;
+
+            }
+
+        }
+        if (flags) {
+
+            System.out.println(sb1);
+            System.out.println(
+                    "\nname contains digits" + sb1 + "digits .. \nplease try to avoid specifyig digits in  name\n");
+        } else {
+
+            System.out.println("\n Name do not contains digits...Good to go\n ");
+
+        }
+
+        /************************************************************************************************************* */
+        System.out.println("\nsystem generated bank number" + card + "\n");
+
+        /************************************************************************************************************ */
+
+        // here im using substring method
+        // to add custom user last digit (append) to generated bank code
+
+        System.out.print("\nbank digits after removing last 4 digits\n");
+        System.out.print(card.substring(0, card.length() - 4));
+        System.out.println(
+                " \nplease enter another set of 4 digits line by line to be added to your generatd bank number\nthis is to ensure your security\n");
+        for (int i = 0; i < 4; i++) {
+            news = s.nextInt();
+            card += Integer.toString(news);
+            System.out.print("");
+
+        }
+
+        /********************************************************************************************************* */
+
+        System.out.println("\nbank code after adding new characters \n " + card);
+        System.out.print("\n1.confirm your code.\n2. Delete Some digits and set it as code.\n3.enter choice\n ");
+        int choice=s.nextInt();
+        if(choice==1){
+            System.out.println(card);
+            System.out.println("\n please do not share this pin with anyone\n");
+    }
+
+
+             /******************************************************************************************** */
+             //  here im using delete method  
+
+    else if (choice==2){
+
+        int start_index,last_index;
+     
+        System.out.println(" \n enter Starting index  :\n ");
+        start_index=s.nextInt();
+        System.out.println(" \n enter last index :\n ");
+       last_index=s.nextInt();
+       StringBuffer newDigits = new StringBuffer(card);
+        System.out.println("\n new code after deleting some digits as per user request\n "+ newDigits.delete(start_index,last_index));
+
+
+    }
+
+    }
+
+}
