@@ -1,0 +1,308 @@
+// lab7
+
+/*******************************************************************************
+ * 
+ *                            login details
+ *                  
+ *          roles              id                       pass
+ * 
+ *        1. customer          6348                    c@pg123 
+ * 
+ *        2. Staff             7939                    s@pg123        
+ * 
+ *        3. Admin             9380                    a@pg123
+ * 
+ * 
+ * 
+ * 
+ *************************************************************************************/
+
+import java.util.Scanner;
+
+abstract class credentials {
+    int cust_id;
+    int staff_id;
+    int admin_id;
+    StringBuffer cuspass;
+    StringBuffer staffpass;
+    StringBuffer adminpass;
+    static boolean admin = false;
+    static boolean customer = false;
+    static boolean staff = false;
+
+    credentials() {
+        System.out.println("-------------------BANK LOCKER LOGIN-------------------------");
+    }
+
+    credentials(int cusid, StringBuffer cus, int stafid, StringBuffer staf, int docid, StringBuffer doc) {
+        this.cust_id = cusid;
+        this.cuspass = cus;
+        this.staff_id = stafid;
+        this.staffpass = staf;
+        this.admin_id = docid;
+        this.adminpass = doc;
+    }
+
+    abstract void AllCredentials();
+
+    abstract void RestrictedCred();
+
+    abstract void customerCred();
+
+    abstract void verify(int id, StringBuffer pass, login obj);
+}
+
+class process extends credentials {
+    process(int cusid, StringBuffer cus, int stafid, StringBuffer staf, int docid, StringBuffer doc) {
+        super(6348, cus, 7937, staf, 9380, doc);
+    }
+
+    final void AllCredentials() {
+        System.out.println("***********customer**************");
+        System.out.println("customer id>>" + this.cust_id);
+        System.out.println("customer pass>>" + this.cuspass);
+        System.out.println("\n************Staff**************");
+        System.out.println("Staff id>>" + this.staff_id);
+        System.out.println("Staff pass>>" + this.staffpass);
+        System.out.println("\n************admin*************");
+        System.out.println("admin id>>" + this.admin_id);
+        System.out.println("admin pass>>" + this.adminpass);
+    }
+
+    final void RestrictedCred() {
+        System.out.println("***********customer**************");
+        System.out.println("customer id>>" + this.cust_id);
+        System.out.println("customer pass>>" + this.cuspass);
+        System.out.println("\n************Staff**************");
+        System.out.println("Staff id>>" + this.staff_id);
+        System.out.println("Staff pass>>" + this.staffpass);
+    }
+
+    final void customerCred() {
+        System.out.println("***********customer**************");
+        System.out.println("customer id>>" + this.cust_id);
+        System.out.println("customer pass>>" + this.cuspass);
+    }
+
+    final void verify(int id, StringBuffer pass, login obj) {
+        boolean doc = obj.validatedoc(id, pass);
+        boolean pat = obj.validatepat(id, pass);
+        boolean staff = obj.validatestaff(id, pass);
+        if (doc == true) {
+            login.admin = true;
+            login.staff = false;
+            login.customer = false;
+        } else if (pat == true) {
+            login.admin = false;
+            login.staff = false;
+            login.customer = true;
+        } else if (staff == true) {
+            login.admin = false;
+            login.staff = true;
+            login.customer = false;
+        }
+    }
+}
+
+class customer extends process {
+    customer(int cusid, StringBuffer cus, int stafid, StringBuffer staf, int docid, StringBuffer doc) {
+        super(6348, cus, 7937, staf, 9380, doc);
+    }
+
+    public boolean validatepat(int id, StringBuffer pass) {
+        if (this.cust_id == id && this.cuspass.toString().equals(pass.toString()))
+            return true;
+        else
+            return false;
+    }
+
+    public void updatepat() {
+        Scanner input = new Scanner(System.in);
+        System.out.println("Current Credentials");
+        System.out.println("customer id>>" + this.cust_id);
+        System.out.println("customer pass>>" + this.cuspass);
+        System.out.println("Enter new id>>");
+        this.cust_id = input.nextInt();
+        System.out.println("Enter new password>>");
+        String pass = input.next();
+        this.cuspass.setLength(0);
+        this.cuspass.append(pass);
+        System.out.println("updated credentials");
+        System.out.println("customer id>>" + this.cust_id);
+        System.out.println("customer pass>>" + this.cuspass);
+    }
+}
+
+class staff extends customer {
+    staff(int cusid, StringBuffer cus, int stafid, StringBuffer staf, int docid, StringBuffer doc) {
+        super(6348, cus, 7937, staf, 9380, doc);
+    }
+
+    public boolean validatestaff(int id, StringBuffer pass) {
+        if (this.staff_id == id && this.staffpass.toString().equals(pass.toString()))
+            return true;
+        else
+            return false;
+    }
+
+    public void updatepat() {
+        super.updatepat();
+    }
+
+    public void updatestaff() {
+        Scanner input = new Scanner(System.in);
+        System.out.println("Current Credentials");
+        System.out.println("Staff id>>" + this.staff_id);
+        System.out.println("Staff pass>>" + this.staffpass);
+        System.out.println("Enter new id>>");
+        this.staff_id = input.nextInt();
+        System.out.println("Enter new password>>");
+        String pass = input.next();
+        this.staffpass.setLength(0);
+        this.staffpass.append(pass);
+        System.out.println("updated credentials");
+        System.out.println("Staff id id>>" + this.staff_id);
+        System.out.println("Staff pass>>" + this.staffpass);
+    }
+}
+
+class admin extends staff {
+    admin(int cusid, StringBuffer cus, int stafid, StringBuffer staf, int docid, StringBuffer doc) {
+        super(6348, cus, 7937, staf, 9380, doc);
+    }
+
+    public boolean validatedoc(int id, StringBuffer pass) {
+        if (this.admin_id == id && this.adminpass.toString().equals(pass.toString()))
+            return true;
+        else
+            return false;
+    }
+
+    public void updatestaff() {
+        super.updatestaff();
+    }
+
+    public void updatedoc() {
+        Scanner input = new Scanner(System.in);
+        System.out.println("Current Credentials");
+        System.out.println("admin id>>" + this.admin_id);
+        System.out.println("admin pass>>" + this.adminpass);
+        System.out.println("Enter new id>>");
+        this.admin_id = input.nextInt();
+        System.out.println("Enter new password>>");
+        String pass = input.next();
+        this.adminpass.setLength(0);
+        this.adminpass.append(pass);
+        System.out.println("updated credentials");
+        System.out.println("admin id>>" + this.admin_id);
+        System.out.println("admin pass>>" + this.adminpass);
+    }
+}
+
+class login extends admin {
+    login(StringBuffer cus, StringBuffer staf, StringBuffer doc) {
+        super(6348, cus, 7937, staf, 9380, doc);
+    }
+
+    public static void main(String args[]) {
+        Boolean doc = false, pat = false, staf = false;
+        Boolean doct = false, staff = false;
+        Scanner input = new Scanner(System.in);
+        StringBuffer pass1 = new StringBuffer("c@pv123");
+        StringBuffer pass2 = new StringBuffer("s@pv123");
+        StringBuffer pass3 = new StringBuffer("a@pv123");
+        login obj = new login(pass1, pass2, pass3);
+        while (true) {
+            System.out.println("1.login\n2.logout\n3.update credentials\n4.print credentials\nEnter your choice:");
+            int ch = input.nextInt();
+            switch (ch) {
+                case 1:
+                    System.out.println("enter your pass>>");
+                    String pasw = input.next();
+                    StringBuffer paswd = new StringBuffer();
+                    paswd.append(pasw);
+                    System.out.println("enter your id>>");
+                    int id2 = input.nextInt();
+                    obj.verify(id2, paswd, obj);
+                    break;
+                case 2:
+                    login.admin = false;
+                    login.staff = false;
+                    login.customer = false;
+                    break;
+                case 3:
+                    if (login.admin == false && login.staff == false && login.customer == false) {
+                        System.out.println("enter your pass>>");
+                        String passw = input.next();
+                        System.out.println("enter your id>>");
+                        int ids = input.nextInt();
+                        StringBuffer pswd = new StringBuffer();
+                        pswd.append(passw);
+                        doct = obj.validatedoc(ids, pswd);
+                        staff = obj.validatestaff(ids, pswd);
+                    }
+                    if (doct == true || login.admin == true) {
+                        System.out.println(
+                                "1.edit staff credentials\n2.edit customer credentials\n3.update admin credentials");
+                        int ch1 = input.nextInt();
+                        switch (ch1) {
+                            case 1:
+                                obj.updatestaff();
+                                break;
+                            case 2:
+                                obj.updatepat();
+                                break;
+                            case 3:
+                                obj.updatedoc();
+                                break;
+                            default:
+                                System.out.println("invalid option");
+                                break;
+                        }
+                    } else if (staff == true || login.staff == true) {
+                        System.out.println("1.edit staff credentials\n2.update customer credentials");
+                        int ch1 = input.nextInt();
+                        switch (ch1) {
+                            case 1:
+                                obj.updatestaff();
+                                break;
+                            case 2:
+                                obj.updatepat();
+                                break;
+                            default:
+                                System.out.println("invalid option");
+                                break;
+                        }
+                    } else {
+                        System.out.println("you dont have access to update");
+                    }
+                    break;
+                case 4:
+                    if (login.admin == false && login.staff == false && login.customer == false) {
+                        System.out.println("enter your pass>>");
+                        String pass = input.next();
+                        System.out.println("enter your id>>");
+                        int id = input.nextInt();
+                        StringBuffer psw = new StringBuffer();
+                        psw.append(pass);
+                        doc = obj.validatedoc(id, psw);
+                        pat = obj.validatepat(id, psw);
+                        staf = obj.validatestaff(id, psw);
+                    }
+                    if (doc == true || login.admin == true) {
+                        obj.AllCredentials();
+                    } else if (staf == true || login.staff == true) {
+                        obj.RestrictedCred();
+                    } else if (pat == true || login.customer == true) {
+                        obj.customerCred();
+                    } else {
+                        System.out.println("you dont have access, please contact the admin");
+                    }
+                    break;
+                default:
+                    System.out.println("invalid choice");
+                    break;
+            }
+        }
+    }
+}
