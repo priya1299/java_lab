@@ -106,10 +106,10 @@ class mainMethod {
         Bank obj = new Bank();
 
         // Creating threads
-        ThreadWithdrawal t1 = new ThreadWithdrawal(obj, "Rakesh", 20);
-        ThreadWithdrawal t2 = new ThreadWithdrawal(obj, "rajesh", 40);
+        ThreadWithdrawal t1 = new ThreadWithdrawal(obj, "Priya", 20);
+        ThreadWithdrawal t2 = new ThreadWithdrawal(obj, "divya", 40);
         ThreadDeposit t3 = new ThreadDeposit(obj, "smith", 35);
-        ThreadWithdrawal t4 = new ThreadWithdrawal(obj, "logesh", 80);
+        ThreadWithdrawal t4 = new ThreadWithdrawal(obj, "priyanka", 80);
         ThreadWithdrawal t5 = new ThreadWithdrawal(obj, "joshua", 40);
 
         t1.start();
