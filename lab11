@@ -1,121 +1,161 @@
-class Bank {
+import java.io.*;
+import java.util.*;
 
-    static int total = 100;
-
-    static synchronized void withdrawn(String name,
-            int withdrawal) {
-        if (total >= withdrawal) {
-            System.out.println(name + " withdrawn "
-                    + withdrawal);
-            total = total - withdrawal;
-            System.out.println("Balance after withdrawal: "
-                    + total);
-            /*
-             * Making the thread sleep for 1 second after
-             * each withdrawal.
-             */
-            try {
-                Thread.sleep(1000);
-            } catch (InterruptedException e) {
-
-                // to display line no where exception has occured
-                e.printStackTrace();
-            }
-        } else {
-            System.out.println(name
-                    + " you can not withdraw "
-                    + withdrawal);
-            System.out.println("your balance is: " + total);
-
-            try {
-
-                // Making thread to sleep for 1 second
-                Thread.sleep(1000);
-            }
-
-            catch (InterruptedException e) {
-
-                // to diplay line where exception has occured
-                e.printStackTrace();
-            }
-        }
-    }
-
-    static synchronized void deposit(String name,
-            int deposit) {
-        System.out.println(name + " deposited " + deposit);
-        total = total + deposit;
-        System.out.println("Balance after deposit: "
-                + total);
-
-        try {
-
-            // Making thread to sleep for 1 second
-            Thread.sleep(1000);
-        }
-
-        catch (InterruptedException e) {
-
-            e.printStackTrace();
-        }
-    }
-}
-
-class ThreadWithdrawal extends Thread {
-
-    Bank object;
+class Customer {
+    Long acno;
     String name;
-    int rupees;
+    String add;
+    Long bal;
 
-    // Constructor of this class
-    ThreadWithdrawal(Bank ob, String name, int money) {
-        // This keyword refers to parent class
-        this.object = ob;
+    Customer(Long acno, String name, String add, Long bal) {
+        this.acno = acno;
         this.name = name;
-        this.rupees = money;
+        this.add = add;
+        this.bal = bal;
     }
 
-    // run() method for the thread
-    public void run() {
-        object.withdrawn(name, rupees);
-    }
 }
 
-class ThreadDeposit extends Thread {
+public class Main {
+    ArrayList pv = new ArrayList();
+    BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
 
-    Bank object;
-    String name;
-    int rupees;
+    public void addCustomer() throws Exception {
+        System.out.println("—- Enter Customer Data —-");
+        System.out.println("Enter Customer Name : ");
+        String nm = br.readLine();
+        System.out.println("Enter Customer Address : ");
+        String ad = br.readLine();
+        System.out.println("Enter Customer Account Number : ");
+        Long ac = Long.parseLong(br.readLine());
+        System.out.println("Enter Customer Initial Balance : ");
+        Long bl = Long.parseLong(br.readLine());
 
-    ThreadDeposit(Bank ob, String name, int money) {
-        this.object = ob;
-        this.name = name;
-        this.rupees = money;
+        Customer c = new Customer(ac, nm, ad, bl);
+
+        pv.add(c);
+
+        System.out.println("New Customer Added Successfully");
+        System.out.println("Welcome to pv Bank Mr./Ms." + c.name);
+
     }
 
-    public void run() {
-        object.deposit(name, rupees);
+    public void delCustomer() throws Exception {
+        System.out.println("Enter Account Number to be Delete");
+        Long ac = Long.parseLong(br.readLine());
+        Iterator it = pv.iterator();
+        while (it.hasNext()) {
+
+            Customer c = (Customer) it.next();
+
+            if (ac == c.acno) {
+                String c_name = c.name;
+                pv.remove(c);
+                System.out.println("Customer " + ac + "Removed Successfully");
+                System.out.println("Mr./Ms. " + c_name + " You are no longer associated with pv Bank");
+                break;
+            }
+        }
     }
-}
 
-class mainMethod {
+    public void upCustomer() throws Exception {
+        System.out.println("Enter Account Number to be Update : ");
+        Long ac = Long.parseLong(br.readLine());
 
-    // Main driver method
-    public static void main(String[] args) {
+        Iterator it = pv.iterator();
+        while (it.hasNext()) {
+            Customer c = (Customer) it.next();
+            if (ac == c.acno) {
+                System.out.println("Current Data is : ");
+                System.out.println("Customer Name : " + c.name);
+                System.out.println("New Name….??");
+                String nm = br.readLine();
+                System.out.println("Customer Address : " + c.add);
+                String ad = br.readLine();
+                Long old_bal = c.bal;
+                Long old_ac_no = c.acno;
+                pv.remove(c);
+                Customer new_c = new Customer(old_ac_no, nm, ad, old_bal);
+                pv.add(new_c);
+                System.out.println("Successfully updated both Name and Address");
+                System.out.println("**************************************************");
+                System.out.println("New Data is : ");
+                System.out.println("Customer Name : " + new_c.name);
+                System.out.println("Customer Address : " + new_c.add);
+                System.out.println("Customer Account Number : " + new_c.acno);
+                System.out.println("Customer Balance : " + new_c.bal);
+                System.out.println("**************************************************");
+            }
+        }
 
-        Bank obj = new Bank();
+    }
 
-        // Creating threads
-        ThreadWithdrawal t1 = new ThreadWithdrawal(obj, "Rakesh", 20);
-        ThreadWithdrawal t2 = new ThreadWithdrawal(obj, "rajesh", 40);
-        ThreadDeposit t3 = new ThreadDeposit(obj, "smith", 35);
-        ThreadWithdrawal t4 = new ThreadWithdrawal(obj, "logesh", 80);
-        ThreadWithdrawal t5 = new ThreadWithdrawal(obj, "joshua", 40);
+    public void getCustomer() throws Exception {
+        System.out.println("Enter Account Number To View Customer : ");
+        Long ac = Long.parseLong(br.readLine());
 
-        t1.start();
-        t2.start();
-        t3.start();
-        t4.start();
-        t5.start();
+        Iterator it = pv.iterator();
+        while (it.hasNext()) {
+            Customer c = (Customer) it.next();
+            if (ac == c.acno)
+                System.out.println("Here is Your Customer :");
+            System.out.println("**************************************************");
+            System.out.println("Customer Name : " + c.name);
+            System.out.println("Customer Address : " + c.add);
+            System.out.println("Customer Account Number : " + c.acno);
+            System.out.println("Customer Ballance : " + c.bal);
+            System.out.println("**************************************************");
+        }
+    }
+
+    public static void main(String[] args) throws Exception {
+        Main obj = new Main();
+        BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+
+        System.out.println("-------------------------------------");
+        System.out.println("Welcome To pv Bank");
+        System.out.println("-------------------------------------");
+
+        String next = "yes";
+        while (next.equalsIgnoreCase("yes")) {
+            System.out.println("——————– MENU —————————");
+            System.out.println("---------------------------------");
+
+            System.out.println(" 1 for Add new Customer");
+            System.out.println(" 2 for Delete Existing Customer");
+            System.out.println(" 3 for Update Existing Customer");
+            System.out.println(" 4 for Get Customer Information");
+
+            System.out.println("---------------------------------");
+            System.out.println("---------------------------------");
+            System.out.println("Enter Your Choice from 1 to 4 : ");
+
+            int choice = Integer.parseInt(br.readLine());
+
+            switch (choice) {
+                case 1:
+                    obj.addCustomer();
+                    break;
+                case 2:
+                    obj.delCustomer();
+                    break;
+                case 3:
+                    obj.upCustomer();
+                    break;
+                case 4:
+                    obj.getCustomer();
+                    break;
+                default:
+                    System.out.println("Enter Valid Choice Dear User");
+                    break;
+            }
+            System.out.println("Want to Continue…??");
+            next = br.readLine();
+
+            if (next.equalsIgnoreCase("no")) {
+                System.exit(0);
+            }
+        }
+
     }
 }
